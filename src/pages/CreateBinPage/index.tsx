@@ -158,7 +158,7 @@ const CreateBinPage = () => {
                   return (
                     <option
                       selected
-                      value={organization.organizationId}
+                      value={organization.email}
                       key={organization.organizationId}
                     >
                       {organization.name}
