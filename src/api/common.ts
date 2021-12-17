@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-export const BASE_URL = "http://localhost:9999/api/";
+export const BASE_URL = "http://3.110.148.123:9999/api/";
 const commonHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "*",
