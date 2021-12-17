@@ -66,7 +66,7 @@ const Login = () => {
   return (
     <div>
       <div className="center">
-        <Container>
+        {/* <Container>
           <Row>
             <Col
               lg={{ span: 4, offset: 4 }}
@@ -127,7 +127,8 @@ const Login = () => {
             </Col>
           </Row>
         </Container>
-      </div>
+      </div> */}
+      <h1>Welcome to Homepage</h1>
     </div>
   );
 };
