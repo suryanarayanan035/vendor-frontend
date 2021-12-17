@@ -64,9 +64,8 @@ const Login = () => {
     }
   };
   return (
-    <div>
-      <div className="center">
-        {/* <Container>
+    <div className="center">
+      {/* <Container>
           <Row>
             <Col
               lg={{ span: 4, offset: 4 }}
