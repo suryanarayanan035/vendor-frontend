@@ -23,6 +23,14 @@ const validateOrganization = (e: any) => {
   return false;
 };
 
+const validateBinName = (e: any) => {
+  const { value } = e.target;
+  if (!value || value?.length < 1) {
+    return true;
+  }
+  return false;
+};
+
 const CreateBinPage = () => {
   const binHeights: { [key: string]: number } = {
     "25": 48,
@@ -35,6 +43,10 @@ const CreateBinPage = () => {
     "50": 46,
   };
   const { bind: bindMacId, error: macIdError } = useInput("", validateMacId);
+  const { bind: bindBinName, error: binNameError } = useInput(
+    "",
+    validateBinName
+  );
   const { bind: bindVolume } = useInput("25");
   const { bind: bindNoOfRacks } = useInput("45");
   const [organizations, setOrganizations] = useState<any[]>([]);
@@ -63,7 +75,7 @@ const CreateBinPage = () => {
         var1: "Food waste",
         var2: "Cans and plastic",
         var3: "Non-Recyclable waste",
-        binname: "",
+        binname: bindBinName.value,
         batterylevel: "",
         location: "",
         model: "3X25",
@@ -144,6 +156,19 @@ const CreateBinPage = () => {
                 <option value="3">3</option>
                 <option value="4">4</option>
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Bin Name</Form.Label>
+              <Form.Control
+                type="text"
+                name="binName"
+                {...bindBinName}
+              ></Form.Control>
+              {binNameError ? (
+                <Form.Text className="text-muted text-danger">
+                  Bin name cannot be empty
+                </Form.Text>
+              ) : null}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Organization</Form.Label>
