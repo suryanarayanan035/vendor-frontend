@@ -6,10 +6,12 @@ const commonHeaders = {
 };
 export const getRequest = async (
   url: string,
-  config: AxiosRequestConfig<any> = {}
+  config: AxiosRequestConfig<any> = {},
+  abortController?: AbortSignal
 ) => {
   try {
     const response = await axios.get(url, {
+      signal: abortController,
       ...config,
       headers: { ...config?.headers, ...commonHeaders },
     });

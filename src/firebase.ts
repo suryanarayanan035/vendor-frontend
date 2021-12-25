@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 // const app = initializeApp({
 //   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -25,5 +25,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
 export const auth = getAuth(app);
+
+export const firebaseSignInWithEmailAndPassword = async (
+  auth: any,
+  email: string,
+  password: string
+) => {
+  try {
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (error: any) {
+    console.error("Error occured");
+    alert(error.message);
+  }
+};
+
+export const firebaseSignout = () => {
+  auth.signOut();
+};
 
 export default app;

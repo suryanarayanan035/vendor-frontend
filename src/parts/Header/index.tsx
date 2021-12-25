@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, firebaseSignout } from "../../firebase";
 import "./header.css";
 export const Header = () => {
-  const { isLoggedIn, currentUsername } = useSelector((state: any) => state);
-  console.log(isLoggedIn);
+  const [username, setUsername] = useState<any>("Login");
+  const [user] = useAuthState(auth);
+  useEffect(() => {
+    if (user) {
+      setUsername(user.email);
+    }
+  }, [user]);
+
   return (
     <Navbar className="mb-3" bg="primary" expand="md" variant="dark">
       <Container>
@@ -27,7 +34,18 @@ export const Header = () => {
           </Nav>
         </Navbar.Collapse>
         <Navbar.Text>
-          {isLoggedIn ? currentUsername : <a href="login">Log In</a>}
+          {user ? (
+            <a
+              href="#"
+              onClick={() => {
+                firebaseSignout();
+              }}
+            >
+              Signout
+            </a>
+          ) : (
+            <a href="login">Signin</a>
+          )}
         </Navbar.Text>
       </Container>
     </Navbar>

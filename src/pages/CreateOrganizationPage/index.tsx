@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { Form, Button } from "react-bootstrap";
@@ -10,9 +10,10 @@ import { FormLoadSpinner } from "../../components/FormLoadSpinner";
 import "./createorganizationpage.css";
 
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../firebase";
+import { auth, storage } from "../../firebase";
 import { getUUID } from "../../common/utils";
 import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const validateOrganization = (event: any) => {
   const { value } = event.target;
@@ -84,8 +85,20 @@ export const CreateOrganizationPage = () => {
 
   const [vendorLogo, setVendorLogo] = useState<any>();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (loading) {
+      console.log("loading");
+    } else {
+      console.log("loading Completed");
+      if (!user) {
+        navigate("/login");
+      }
+    }
+
+    return () => {};
+  }, [user]);
   const hanldeFileChange = (event: any) => {
     const file = event.target.files[0];
     console.log(file);

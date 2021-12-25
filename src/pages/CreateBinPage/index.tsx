@@ -3,8 +3,11 @@ import { useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 import { createBin } from "../../api/CreateBinPage";
 import { fetchOrganizations } from "../../api/ListBinsPage";
+import { auth } from "../../firebase";
 import { useInput } from "../../hooks/useInput";
 
 const validateMacId = (e: any) => {
@@ -91,19 +94,28 @@ const CreateBinPage = () => {
       setIsSubmitDisabled(true);
     }
   };
-
+  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
   useEffect(() => {
-    const fetch = async () => {
-      const response = await fetchOrganizations();
-      if (!response) {
-        setOrganizations([]);
+    if (loading) {
+      console.log("loading");
+    } else {
+      if (user) {
+        const fetch = async () => {
+          const response = await fetchOrganizations();
+          if (!response) {
+            setOrganizations([]);
+          } else {
+            const organizations: any = Object.values(response.organizations);
+            setOrganizations(organizations);
+          }
+        };
       } else {
-        const organizations: any = Object.values(response.organizations);
-        setOrganizations(organizations);
+        navigate("/login", { replace: true });
       }
-    };
-    fetch();
-  }, []);
+    }
+    return () => {};
+  }, [user, loading]);
   return (
     <Container>
       <Row>

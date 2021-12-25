@@ -5,16 +5,23 @@ import { Card } from "react-bootstrap";
 import { IOrganizationCard } from "../../interfaces/Bins";
 import { fetchOrganizations } from "../../api/ListBinsPage";
 import "./listbinspage.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ListBinsPage = () => {
   const [organizations, setOrganizations] = useState<any>([]);
+  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
   useEffect(() => {
+    const abortController = new AbortController();
     const fetch = async () => {
       try {
-        const response = await fetchOrganizations();
+        const response = await fetchOrganizations(abortController.signal);
         console.log(response.organizations);
         if (!response) {
-          setOrganizations([]);
+          console.error("Can't fetch data");
         } else {
           console.log(Object.values(response.organizations));
           setOrganizations(Object.values(response.organizations));
@@ -24,8 +31,23 @@ const ListBinsPage = () => {
         setOrganizations([]);
       }
     };
-    fetch();
-  }, []);
+    if (loading) {
+      console.log("Loading");
+    } else {
+      console.log("Completed loading");
+      if (!user) {
+        abortController.abort();
+        return navigate("/login");
+      } else {
+        console.log("inside else in listbinspage");
+        fetch();
+      }
+    }
+
+    // return () => {
+    //   abortController.abort();
+    // };
+  }, [user, loading]);
   return (
     <Container>
       <Row>
