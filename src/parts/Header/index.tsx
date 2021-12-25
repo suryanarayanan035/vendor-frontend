@@ -1,3 +1,4 @@
+import { sendPasswordResetEmail } from "@firebase/auth";
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
@@ -6,13 +7,20 @@ import { auth, firebaseSignout } from "../../firebase";
 import "./header.css";
 export const Header = () => {
   const [username, setUsername] = useState<any>("Login");
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   useEffect(() => {
-    if (user) {
-      setUsername(user.email);
+    if (!loading) {
+      if (user) {
+        setUsername(user.email);
+      }
     }
   }, [user]);
-
+  const getPasswordResetLink = () => {
+    if (!loading) {
+      sendPasswordResetEmail(auth, user?.email ? user?.email : "");
+      console.log("Mail Sent");
+    }
+  };
   return (
     <Navbar className="mb-3" bg="primary" expand="md" variant="dark">
       <Container>
@@ -33,20 +41,26 @@ export const Header = () => {
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
-        <Navbar.Text>
-          {user ? (
-            <a
-              href="#"
-              onClick={() => {
-                firebaseSignout();
-              }}
-            >
-              Signout
-            </a>
-          ) : (
-            <a href="login">Signin</a>
-          )}
-        </Navbar.Text>
+        {user ? (
+          <Nav>
+            <NavDropdown title="Settings">
+              <NavDropdown.Item onClick={getPasswordResetLink}>
+                Reset Password
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                onClick={() => {
+                  firebaseSignout();
+                }}
+              >
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        ) : (
+          <Nav>
+            <NavDropdown.Item href="/login">Login</NavDropdown.Item>
+          </Nav>
+        )}
       </Container>
     </Navbar>
   );

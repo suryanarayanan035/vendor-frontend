@@ -11,6 +11,7 @@ import { CreateOrganizationPage } from "./pages/CreateOrganizationPage";
 import { Footer } from "./parts/Footer";
 import store from "./redux/store";
 import { FormLoadSpinner } from "./components/FormLoadSpinner";
+import { ChangePasswordPage } from "./pages/ChangePasswordPage";
 function App() {
   return (
     <Provider store={store}>
@@ -20,6 +21,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Login></Login>}></Route>
             <Route path="login" element={<Login></Login>}></Route>
+            {/* <Route
+              path="change-password"
+              element={<ChangePasswordPage></ChangePasswordPage>}
+            ></Route> */}
+
             <Route
               path="create-bin"
               element={<CreateBinPage></CreateBinPage>}
