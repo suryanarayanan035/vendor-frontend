@@ -70,10 +70,18 @@ const ListBinsPage = () => {
                         <strong> {organization.organizationId}</strong>
                         <br />
                         Organization: &nbsp;<strong>{organization.name}</strong>
-                        {/* <br />
-                        No of Bins Sold: &nbsp;
-                        <strong>{organization.noOfBinsSold}</strong>
-                        <br /> */}
+                        <br />
+                        Admin Name: &nbsp;
+                        <strong>{organization.admin}</strong>
+                        <br />
+                        <br />
+                        Admin Email: &nbsp;
+                        <strong>{organization.adminEmail}</strong>
+                        <br />
+                        <br />
+                        Admin Mobile: &nbsp;
+                        <strong>{organization.adminMobile}</strong>
+                        <br />
                       </Card.Text>
                     </Card.Body>
                   </Card>

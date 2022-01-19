@@ -3,4 +3,7 @@ export interface IOrganizationCard {
   organizationId: string;
   emailId: number;
   logo: string;
+  admin: string;
+  adminEmail: string;
+  adminMobile: string;
 }
